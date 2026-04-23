@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa Krunchy — Narhman, Accra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0b09;
+    --bg2: #13110e;
+    --surface: rgba(255,255,255,0.04);
+    --surface2: rgba(255,255,255,0.07);
+    --border: rgba(255,255,255,0.08);
+    --text: #f0ebe3;
+    --text-muted: rgba(240,235,227,0.5);
+    --text-faint: rgba(240,235,227,0.25);
+    --gold: #c9a96e;
+    --gold-light: #e4c99a;
+    --gold-dim: rgba(201,169,110,0.15);
+    --amber: #d4845a;
+    --glow1: rgba(201,169,110,0.18);
+    --glow2: rgba(212,132,90,0.12);
+    --glow3: rgba(180,120,60,0.1);
+    --card-bg: rgba(255,255,255,0.035);
+    --card-hover: rgba(255,255,255,0.065);
+    --nav-bg: rgba(13,11,9,0.85);
+    --tag-bg: rgba(201,169,110,0.12);
+    --shadow: 0 8px 40px rgba(0,0,0,0.6);
+    --shadow-gold: 0 0 40px rgba(201,169,110,0.12);
+    --transition: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  [data-theme="light"] {
+    --bg: #faf7f2;
+    --bg2: #f2ede4;
+    --surface: rgba(0,0,0,0.03);
+    --surface2: rgba(0,0,0,0.055);
+    --border: rgba(0,0,0,0.09);
+    --text: #1a1410;
+    --text-muted: rgba(26,20,16,0.55);
+    --text-faint: rgba(26,20,16,0.25);
+    --gold: #a07830;
+    --gold-light: #c49840;
+    --gold-dim: rgba(160,120,48,0.1);
+    --amber: #b5603a;
+    --glow1: rgba(201,169,110,0.2);
+    --glow2: rgba(212,132,90,0.12);
+    --glow3: rgba(180,120,60,0.08);
+    --card-bg: rgba(255,255,255,0.7);
+    --card-hover: rgba(255,255,255,0.95);
+    --nav-bg: rgba(250,247,242,0.9);
+    --tag-bg: rgba(160,120,48,0.1);
+    --shadow: 0 8px 40px rgba(0,0,0,0.12);
+    --shadow-gold: 0 0 40px rgba(201,169,110,0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.5s var(--transition), color 0.5s var(--transition);
+  }
+
+  /* ── AMBIENT BLOBS ── */
+  .ambient {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.55;
+    animation: drift 14s ease-in-out infinite alternate;
+  }
+  .blob-1 {
+    width: 520px; height: 520px;
+    background: radial-gradient(circle, rgba(201,169,110,0.28) 0%, transparent 70%);
+    top: -100px; left: -120px;
+    animation-duration: 16s;
+  }
+  .blob-2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(212,132,90,0.2) 0%, transparent 70%);
+    top: 40%; right: -80px;
+    animation-duration: 11s;
+    animation-delay: -4s;
+  }
+  .blob-3 {
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(180,100,60,0.18) 0%, transparent 70%);
+    bottom: 10%; left: 30%;
+    animation-duration: 18s;
+    animation-delay: -8s;
+  }
+  @keyframes drift {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -20px) scale(1.05); }
+    66% { transform: translate(-20px, 30px) scale(0.97); }
+    100% { transform: translate(15px, 10px) scale(1.02); }
+  }
+  [data-theme="light"] .blob { opacity: 0.35; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 0 40px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--nav-bg);
+    backdrop-filter: blur(24px) saturate(1.5);
+    -webkit-backdrop-filter: blur(24px) saturate(1.5);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.5s var(--transition);
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+  .nav-logo img {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+  .nav-logo span {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .theme-toggle {
+    width: 44px;
+    height: 24px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.3s;
+    flex-shrink: 0;
+  }
+  .theme-toggle::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 16px; height: 16px;
+    background: var(--gold);
+    border-radius: 50%;
+    transition: transform 0.35s var(--transition), background 0.3s;
+    box-shadow: 0 0 8px rgba(201,169,110,0.5);
+  }
+  [data-theme="light"] .theme-toggle::after { transform: translateX(20px); }
+
+  .theme-icon {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    user-select: none;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    padding: 120px 40px 80px;
+    text-align: center;
+  }
+  .hero-inner {
+    max-width: 800px;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: var(--tag-bg);
+    border: 1px solid rgba(201,169,110,0.25);
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 36px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s var(--transition) 0.2s forwards;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 9vw, 7.5rem);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 1s var(--transition) 0.4s forwards;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-sub {
+    margin-top: 24px;
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.7;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.9s var(--transition) 0.65s forwards;
+  }
+  .hero-cta {
+    margin-top: 48px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.9s var(--transition) 0.85s forwards;
+  }
+  .btn-primary {
+    padding: 14px 34px;
+    background: var(--gold);
+    color: #0d0b09;
+    border: none;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
+    box-shadow: 0 4px 20px rgba(201,169,110,0.35);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(201,169,110,0.5);
+    background: var(--gold-light);
+  }
+  .btn-secondary {
+    padding: 14px 34px;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.25s, color 0.25s, transform 0.25s;
+  }
+  .btn-secondary:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    transform: translateY(-2px);
+  }
+
+  .hero-divider {
+    margin-top: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s var(--transition) 1.1s forwards;
+  }
+  .hero-divider span { color: var(--text-faint); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .hero-divider::before, .hero-divider::after {
+    content: '';
+    flex: 1;
+    max-width: 80px;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Info strip */
+  .info-strip {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s var(--transition) 1.2s forwards;
+  }
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+  .info-item .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+
+  /* ── SCROLL ANIMATION BASE ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.85s var(--transition), transform 0.85s var(--transition);
+  }
+  .reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.85s var(--transition), transform 0.85s var(--transition);
+  }
+  .reveal-left.revealed { opacity: 1; transform: translateX(0); }
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.85s var(--transition), transform 0.85s var(--transition);
+  }
+  .reveal-right.revealed { opacity: 1; transform: translateX(0); }
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.85s var(--transition), transform 0.85s var(--transition);
+  }
+  .reveal-scale.revealed { opacity: 1; transform: scale(1); }
+
+  .delay-1 { transition-delay: 0.1s; }
+  .delay-2 { transition-delay: 0.2s; }
+  .delay-3 { transition-delay: 0.3s; }
+  .delay-4 { transition-delay: 0.4s; }
+  .delay-5 { transition-delay: 0.5s; }
+
+  /* ── SECTION WRAPPER ── */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::before {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--text);
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  /* ── ABOUT / STORY ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    margin-top: 60px;
+  }
+  .about-image-wrap {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .about-image-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,169,110,0.15) 0%, transparent 60%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .about-image-wrap img {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    display: block;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+  }
+  .about-text p {
+    font-size: 1.05rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+  .about-text p strong { color: var(--gold); font-weight: 500; }
+  .about-stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 6px; letter-spacing: 0.05em; }
+
+  /* ── MENU SECTION ── */
+  .menu-section { padding-top: 60px; }
+  .menu-tabs {
+    display: flex;
+    gap: 8px;
+    margin-top: 48px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 10px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.3s var(--transition);
+  }
+  .tab-btn.active, .tab-btn:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #0d0b09;
+    box-shadow: 0 4px 16px rgba(201,169,110,0.3);
+  }
+
+  .menu-panel { display: none; }
+  .menu-panel.active { display: block; }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+  }
+  .menu-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: background 0.35s var(--transition), border-color 0.35s, transform 0.35s var(--transition), box-shadow 0.35s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .menu-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    background: linear-gradient(to bottom, var(--gold), var(--amber));
+    border-radius: 0 0 3px 0;
+    transition: height 0.4s var(--transition);
+  }
+  .menu-card:hover::before { height: 100%; }
+  .menu-card:hover {
+    background: var(--card-hover);
+    border-color: rgba(201,169,110,0.3);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-gold), var(--shadow);
+  }
+  .card-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    color: var(--gold);
+    opacity: 0.7;
+    margin-bottom: 10px;
+    letter-spacing: 0.1em;
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .card-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .card-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--gold);
+  }
+  .order-btn {
+    padding: 8px 18px;
+    background: var(--gold-dim);
+    border: 1px solid rgba(201,169,110,0.3);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .order-btn:hover {
+    background: var(--gold);
+    color: #0d0b09;
+    border-color: var(--gold);
+  }
+
+  /* ── REVIEWS ── */
+  .reviews-section { background: transparent; }
+  .rating-hero {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 48px;
+    margin-bottom: 48px;
+  }
+  .rating-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .rating-details { display: flex; flex-direction: column; gap: 6px; }
+  .stars { color: var(--gold); font-size: 1.2rem; letter-spacing: 3px; }
+  .rating-count { font-size: 0.82rem; color: var(--text-muted); }
+
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  .review-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: background 0.35s, border-color 0.35s, transform 0.35s;
+  }
+  .review-card:hover {
+    background: var(--card-hover);
+    border-color: rgba(201,169,110,0.2);
+    transform: translateY(-3px);
+  }
+  .reviewer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .reviewer-meta { font-size: 0.75rem; color: var(--text-faint); margin-bottom: 14px; }
+  .review-stars { color: var(--gold); font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 12px; }
+  .review-text {
+    font-size: 0.9rem;
+    line-height: 1.75;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+  .review-response {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: var(--gold-dim);
+    border-radius: 10px;
+    border-left: 2px solid var(--gold);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+    line-height: 1.65;
+  }
+  .review-response strong { color: var(--gold); font-style: normal; font-size: 0.75rem; display: block; margin-bottom: 4px; letter-spacing: 0.05em; }
+
+  /* ── CONTACT / INFO ── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-top: 60px;
+  }
+  .contact-block h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
+  .contact-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  .contact-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--gold-dim);
+    border: 1px solid rgba(201,169,110,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .contact-info { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+  .contact-info strong { color: var(--text); display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; font-weight: 500; }
+  .contact-info a { color: var(--gold); text-decoration: none; }
+  .contact-info a:hover { text-decoration: underline; }
+
+  .social-links {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .social-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    transition: all 0.25s;
+  }
+  .social-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: var(--gold-dim);
+  }
+
+  /* Hours table */
+  .hours-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.88rem;
+  }
+  .hours-row:last-child { border-bottom: none; }
+  .hours-day { color: var(--text-muted); }
+  .hours-time { color: var(--text); font-weight: 500; }
+  .hours-open { color: #6cba7f; font-size: 0.75rem; font-weight: 500; }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 48px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: gap;
+    gap: 20px;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--gold);
+  }
+  .footer-copy { font-size: 0.78rem; color: var(--text-faint); }
+
+  /* ── UTILITY ── */
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Grain overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+  [data-theme="light"] body::after { opacity: 0.015; }
+
+  /* Divider line */
+  .full-divider {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Sticky scroll indicator */
+  .scroll-progress {
+    position: fixed;
+    top: 72px;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--gold), var(--amber));
+    z-index: 101;
+    width: 0%;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 8px rgba(201,169,110,0.6);
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    section { padding: 70px 20px; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    .menu-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; text-align: center; padding: 40px 20px; }
+    .hero { padding: 110px 20px 60px; }
+    .info-strip { gap: 20px; flex-direction: column; align-items: center; }
+    .about-image-wrap img { height: 280px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Ambient blobs -->
+<div class="ambient">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<!-- Scroll progress -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="imgs/icon.png" alt="Casa Krunchy Logo" onerror="this.style.display='none'">
+    <span>Casa Krunchy</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">Our Story</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#visit">Visit Us</a></li>
+  </ul>
+  <div class="nav-right">
+    <span class="theme-icon" id="themeLabel">🌙</span>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"></button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <span class="hero-tag">Narhman · Accra · Ghana</span>
+    <h1>Where Every<br><em>Meal Tells</em><br>a Story</h1>
+    <p class="hero-sub">A warm corner in Accra where bold Ghanaian flavours meet<br>continental classics — crafted with care, served with love.</p>
+    <div class="hero-cta">
+      <a href="#menu" class="btn-primary">Explore Menu</a>
+      <a href="tel:0594871244" class="btn-secondary">Reserve a Table</a>
+    </div>
+    <div class="hero-divider"><span>Est. in Accra</span></div>
+    <div class="info-strip">
+      <div class="info-item"><span class="dot"></span> Dine-in &amp; Takeaway</div>
+      <div class="info-item"><span class="dot"></span> GH₵100–150 per person</div>
+      <div class="info-item"><span class="dot"></span> Open until 9 PM</div>
+      <div class="info-item"><span class="dot"></span> 5.0 ★ · 13 Reviews</div>
+    </div>
+  </div>
+</div>
+
+<div class="full-divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label reveal">Our Story</div>
+  <h2 class="section-title reveal delay-1">A <em>Krunchy</em> Corner<br>of Accra</h2>
+  <div class="about-grid">
+    <div class="about-image-wrap reveal-left">
+      <img src="imgs/earteryinterior.webp" alt="Casa Krunchy Interior" onerror="this.style.background='var(--surface2)'">
+    </div>
+    <div class="about-text reveal-right">
+      <p>Nestled in <strong>Narhman, Accra</strong>, Casa Krunchy is a restaurant that celebrates the richness of Ghanaian culinary tradition — elevated with continental flair and served in a space designed for comfort and connection.</p>
+      <p>From our <strong>loaded Jollof Platter</strong> to the beloved <strong>Casa Breakie Royale</strong>, every dish is crafted with seasonal ingredients, chef-perfected recipes, and the warmth only a homegrown kitchen can deliver.</p>
+      <p>We are <strong>disability and kids friendly</strong>, making us the perfect spot for families, solo diners, and everyone in between.</p>
+      <div class="about-stats">
+        <div>
+          <div class="stat-num">5.0</div>
+          <div class="stat-label">Google Rating</div>
+        </div>
+        <div>
+          <div class="stat-num">13</div>
+          <div class="stat-label">Happy Reviews</div>
+        </div>
+        <div>
+          <div class="stat-num">3+</div>
+          <div class="stat-label">Menu Categories</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- MENU -->
+<section id="menu" class="menu-section">
+  <div class="section-label reveal">What We Serve</div>
+  <h2 class="section-title reveal delay-1">Our <em>Menu</em></h2>
+
+  <div class="menu-tabs reveal delay-2">
+    <button class="tab-btn active" data-tab="breakfast">🍳 Breakfast</button>
+    <button class="tab-btn" data-tab="salads">🥗 Salads</button>
+    <button class="tab-btn" data-tab="mains">🍽️ Main Dishes</button>
+  </div>
+
+  <!-- BREAKFAST -->
+  <div class="menu-panel active" id="tab-breakfast">
+    <div class="menu-grid">
+      <div class="menu-card reveal delay-1">
+        <div class="card-num">01</div>
+        <div class="card-title">Croissant Sandwich</div>
+        <div class="card-desc">Croissant, Turkey, Cheddar Cheese, Lettuce, Tomatoes, Mustard and Mayonnaise</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 144</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+      <div class="menu-card reveal delay-2">
+        <div class="card-num">02</div>
+        <div class="card-title">Oeufs Balzac</div>
+        <div class="card-desc">Scrambled Eggs, Sausages, Avocado, Toast with Jam</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 144</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+      <div class="menu-card reveal delay-3">
+        <div class="card-num">03</div>
+        <div class="card-title">Savoury Chicken Sandwich</div>
+        <div class="card-desc">Toasted Bread Layered with Butter, Shredded Chicken, Lettuce, Cucumbers, Onions, Tomatoes, American Cheese, Chef's Crafted Spread</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 144</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+      <div class="menu-card reveal delay-1">
+        <div class="card-num">04</div>
+        <div class="card-title">Classic English</div>
+        <div class="card-desc">Toast with Butter, Eggs, Bacon, Sausage, Baked Beans, Fried Mushrooms, Pan-Grilled Tomatoes and Onions</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 144</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+      <div class="menu-card reveal delay-2">
+        <div class="card-num">05</div>
+        <div class="card-title">Fruity Crepes</div>
+        <div class="card-desc">Pancakes with Syrup and Fruit Salad Topping</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 144</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+      <div class="menu-card reveal delay-3">
+        <div class="card-num">06</div>
+        <div class="card-title">Fusion Egg Sandwich</div>
+        <div class="card-desc">Toasted Bread layered with Butter, Omelet, Lettuce, Cucumbers, Onions, Tomatoes, American Cheese, Chef's Crafted Spread</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 144</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+      <div class="menu-card reveal delay-4">
+        <div class="card-num">07</div>
+        <div class="card-title">Casa Breakie Royale</div>
+        <div class="card-desc">Loaded Omelette, Toast, Sautéed Seasonal Vegetables, Sausages, Avocado, Baked Beans and Maxi Hot Chocolate / Cappuccino</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 144</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SALADS -->
+  <div class="menu-panel" id="tab-salads">
+    <div class="menu-grid">
+      <div class="menu-card reveal delay-1">
+        <div class="card-num">01</div>
+        <div class="card-title">Avocado &amp; Shrimp Salad</div>
+        <div class="card-desc">Cooked Shrimps, Avocado, Tomatoes, Red Onions and Cilantro / Dill</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 84</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+      <div class="menu-card reveal delay-2">
+        <div class="card-num">02</div>
+        <div class="card-title">Chicken Salad</div>
+        <div class="card-desc">Romaine Lettuce, Tomatoes, Cucumbers, Carrots, White Onions, Green Bell Pepper, Shredded Chicken Breast</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 84</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+      <div class="menu-card reveal delay-3">
+        <div class="card-num">03</div>
+        <div class="card-title">Greek Salad</div>
+        <div class="card-desc">Tomatoes, Cucumbers, Green Bell Peppers, Red Onions, Olives, and Feta Cheese</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 84</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+      <div class="menu-card reveal delay-1">
+        <div class="card-num">04</div>
+        <div class="card-title">Tuna Salad</div>
+        <div class="card-desc">Romaine Lettuce, Tomatoes, Cucumbers, Carrots, White Onions, Green Bell Pepper, Flaked Tuna</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 84</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+      <div class="menu-card reveal delay-2">
+        <div class="card-num">05</div>
+        <div class="card-title">Caesar Salad</div>
+        <div class="card-desc">Romaine Lettuce, Croutons, Hard Boiled Eggs and Parmesan Cheese</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 72</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+      <div class="menu-card reveal delay-3">
+        <div class="card-num">06</div>
+        <div class="card-title">Ghanaian Salad</div>
+        <div class="card-desc">Lettuce, Cabbage, Tomatoes, Cucumbers, Carrots, Onions, Baked Beans, Boiled Eggs, Sardines and Corned Beef</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 72</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+      <div class="menu-card reveal delay-4">
+        <div class="card-num">07</div>
+        <div class="card-title">Vegetarian Salad</div>
+        <div class="card-desc">Romaine Lettuce, Onions, Carrots, Tomatoes, Green Bell Pepper, Cabbage, Sweet Corn</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 84</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAINS -->
+  <div class="menu-panel" id="tab-mains">
+    <div class="menu-grid">
+      <div class="menu-card reveal delay-1">
+        <div class="card-num">01</div>
+        <div class="card-title">Casa Angwamo</div>
+        <div class="card-desc">Oil Braised Steamed Rice with Beef, Omelet, Sardines, Corned Beef, Fried Plantain, Avocado and Hot Chilli</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 96</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+      <div class="menu-card reveal delay-2">
+        <div class="card-num">02</div>
+        <div class="card-title">Jollof Platter</div>
+        <div class="card-desc">Chevon, Turkey and Chicken Jollof with a Side of Gravy, Fried Plantain and Salad</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 90</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+      <div class="menu-card reveal delay-3">
+        <div class="card-num">03</div>
+        <div class="card-title">Casa Fried Noodles</div>
+        <div class="card-desc">Noodles, Onions, Cabbage, Carrots, Bell Peppers, Chicken, Beef Fillet, Calamari, Shrimps</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 84</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+      <div class="menu-card reveal delay-1">
+        <div class="card-num">04</div>
+        <div class="card-title">Seafood Jollof</div>
+        <div class="card-desc">Jollof with Calamari, Shrimps, Fish Fillet and Vegetables</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 102</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+      <div class="menu-card reveal delay-2">
+        <div class="card-num">05</div>
+        <div class="card-title">Casa Seafood Spaghetti</div>
+        <div class="card-desc">Calamari, Shrimps, Fish, Assorted Vegetables in Tomato Sauce with Fresh Parsley</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 96</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+      <div class="menu-card reveal delay-3">
+        <div class="card-num">06</div>
+        <div class="card-title">Savoury Fried Rice</div>
+        <div class="card-desc">Fried Rice with Vegetables, Shrimps, Fish Fillet, Calamari and Eggs — paired with Green Chilli Sauce and your choice of Grilled Chicken / Beef / Fish / Seafood Sauce</div>
+        <div class="card-footer">
+          <div class="card-price">GH₵ 120</div>
+          <button class="order-btn" onclick="callUs()">Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- REVIEWS -->
+<section id="reviews" class="reviews-section">
+  <div class="section-label reveal">What People Say</div>
+  <h2 class="section-title reveal delay-1">Guest <em>Reviews</em></h2>
+
+  <div class="rating-hero reveal delay-2">
+    <div class="rating-num">5.0</div>
+    <div class="rating-details">
+      <div class="stars">★★★★★</div>
+      <div class="rating-count">Based on 13 Google Reviews</div>
+    </div>
+  </div>
+
+  <div class="reviews-grid">
+    <div class="review-card reveal delay-1">
+      <div class="reviewer-name">Renee Otubea Boateng</div>
+      <div class="reviewer-meta">5 reviews · 3 months ago</div>
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">Just had an amazing lunch at Casa Krunchy! The food was fantastic and the service was top-notch. Loved the ambiance and the thoughtful details. Highly recommend! 👏🍽️</div>
+      <div class="review-response"><strong>Owner's Response</strong>Thank you for your feedback. We appreciate it. 😌</div>
+    </div>
+    <div class="review-card reveal delay-2">
+      <div class="reviewer-name">Jane Anderson</div>
+      <div class="reviewer-meta">1 review · 2 months ago</div>
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">Top notch services at Casa. Food was right on point. I enjoyed every bit of it… I'm definitely visiting again!!!</div>
+      <div class="review-response"><strong>Owner's Response</strong>Thank you for your purchase and feedback. We appreciate it.</div>
+    </div>
+    <div class="review-card reveal delay-3">
+      <div class="reviewer-name">Rita Assah</div>
+      <div class="reviewer-meta">Local Guide · 8 reviews · 3 months ago</div>
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">I love their food especially the jollof platter and their services are super — the food is also affordable. Will visit again!</div>
+      <div class="review-response"><strong>Owner's Response</strong>Thank you Rita for your order and feedback. We really appreciate it. 😊</div>
+    </div>
+    <div class="review-card reveal delay-1">
+      <div class="reviewer-name">Eugenia Bossman</div>
+      <div class="reviewer-meta">2 reviews · 3 months ago</div>
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">I had a great experience at Casa Krunchy. The customer service was excellent — friendly, attentive, and welcoming from start to finish. The pineapple mint juice was especially refreshing and a perfect complement to the meal.</div>
+      <div class="review-response"><strong>Owner's Response</strong>Thank you for your purchase and feedback. We very much appreciate it. 😊</div>
+    </div>
+    <div class="review-card reveal delay-2">
+      <div class="reviewer-name">Nancy Taylor</div>
+      <div class="reviewer-meta">1 review · 3 months ago</div>
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">A nice place to dine with the family. It is disability and kids friendly.</div>
+      <div class="review-response"><strong>Owner's Response</strong>Thank you Nancy for your purchase and feedback. We appreciate it a lot. 😊</div>
+    </div>
+    <div class="review-card reveal delay-3">
+      <div class="reviewer-name">Samantha Stubenrauch</div>
+      <div class="reviewer-meta">1 review · a month ago</div>
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">Fried rice with beef sauce. 😋😋😋😋 — Dine in</div>
+    </div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- VISIT -->
+<section id="visit">
+  <div class="section-label reveal">Find Us</div>
+  <h2 class="section-title reveal delay-1">Come <em>Visit</em> Us</h2>
+
+  <div class="contact-grid">
+    <div class="contact-block reveal-left">
+      <h3>Get in Touch</h3>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div class="contact-info">
+          <strong>Location</strong>
+          Narhman, Accra, Ghana<br>MQMQ+FV Accra
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div class="contact-info">
+          <strong>Phone</strong>
+          <a href="tel:0594871244">059 487 1244</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🕐</div>
+        <div class="contact-info">
+          <strong>Hours</strong>
+          Open daily · Closes 9 PM
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">💳</div>
+        <div class="contact-info">
+          <strong>Price Range</strong>
+          GH₵100–150 per person
+        </div>
+      </div>
+      <div class="social-links">
+        <a href="https://www.instagram.com/casakrunchy/" target="_blank" class="social-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          Instagram
+        </a>
+        <a href="https://maps.google.com/?q=Casa+Krunchy+Narhman+Accra" target="_blank" class="social-btn">
+          🗺️ Directions
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-block reveal-right">
+      <h3>Opening Hours</h3>
+      <div class="hours-row">
+        <span class="hours-day">Monday</span>
+        <span class="hours-time">Open · Closes 9 PM</span>
+      </div>
+      <div class="hours-row">
+        <span class="hours-day">Tuesday</span>
+        <span class="hours-time">Open · Closes 9 PM</span>
+      </div>
+      <div class="hours-row">
+        <span class="hours-day">Wednesday</span>
+        <span class="hours-time">Open · Closes 9 PM</span>
+      </div>
+      <div class="hours-row">
+        <span class="hours-day">Thursday</span>
+        <span class="hours-time">Open · Closes 9 PM <span class="hours-open">● Open now</span></span>
+      </div>
+      <div class="hours-row">
+        <span class="hours-day">Friday</span>
+        <span class="hours-time">Open · Closes 9 PM</span>
+      </div>
+      <div class="hours-row">
+        <span class="hours-day">Saturday</span>
+        <span class="hours-time">Open · Closes 9 PM</span>
+      </div>
+      <div class="hours-row">
+        <span class="hours-day">Sunday</span>
+        <span class="hours-time">Open · Closes 9 PM</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Casa Krunchy</div>
+  <div class="footer-copy">© 2026 Casa Krunchy · Narhman, Accra · All rights reserved</div>
+</footer>
+
+<script>
+  // Theme toggle
+  const toggle = document.getElementById('themeToggle');
+  const label = document.getElementById('themeLabel');
+  const html = document.documentElement;
+
+  toggle.addEventListener('click', () => {
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    label.textContent = isDark ? '☀️' : '🌙';
+  });
+
+  // Scroll progress bar
+  const bar = document.getElementById('scrollProgress');
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (scrolled / total * 100) + '%';
+  }, { passive: true });
+
+  // Marcelo-style scroll reveal with IntersectionObserver
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  revealEls.forEach(el => observer.observe(el));
+
+  // Tab switching
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.menu-panel');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabPanels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const panel = document.getElementById('tab-' + btn.dataset.tab);
+      panel.classList.add('active');
+
+      // Re-trigger reveals for newly shown cards
+      const newReveal = panel.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+      newReveal.forEach(el => {
+        el.classList.remove('revealed');
+        setTimeout(() => observer.observe(el), 50);
+      });
+    });
+  });
+
+  // Order button
+  function callUs() {
+    window.location.href = 'tel:0594871244';
+  }
+
+  // Parallax blob drift on mouse move
+  document.addEventListener('mousemove', (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 20;
+    const y = (e.clientY / window.innerHeight - 0.5) * 20;
+    document.querySelector('.blob-1').style.transform = `translate(${x * 0.6}px, ${y * 0.6}px) scale(1)`;
+    document.querySelector('.blob-2').style.transform = `translate(${-x * 0.4}px, ${-y * 0.4}px) scale(1)`;
+    document.querySelector('.blob-3').style.transform = `translate(${x * 0.3}px, ${y * 0.5}px) scale(1)`;
+  }, { passive: true });
+</script>
+</body>
+</html>
